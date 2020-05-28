@@ -1,0 +1,2 @@
+CREATE USER pbxfal;
+ALTER USER pbxfal WITH SUPERUSER;
