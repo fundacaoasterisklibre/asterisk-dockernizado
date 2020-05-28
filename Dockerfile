@@ -125,5 +125,5 @@ RUN sed -i -e 's/# MAXFILES=/MAXFILES=/' /usr/sbin/safe_asterisk && \
     chown -R asterisk:asterisk /usr/lib64/asterisk/ && \
     localedef -i en_US -f UTF-8 en_US.UTF-8
 
-ENTRYPOINT ["/usr/sbin/asterisk"]
-CMD ["-c", "-vvvv", "-g"]
+ENTRYPOINT ["/etc/init.d/asterisk"]
+CMD ["start"]
