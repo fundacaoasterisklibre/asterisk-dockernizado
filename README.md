@@ -1,4 +1,4 @@
 # Asterisk Dockernizado
 
-### Para criar imagem 
+### Para criar image
 ` $ docker image build -t pbx-fal:v1 .`
