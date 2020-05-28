@@ -127,4 +127,4 @@ RUN sed -i -e 's/# MAXFILES=/MAXFILES=/' /usr/sbin/safe_asterisk && \
 
 COPY http.conf /etc/asterisk/http.conf
 
-CMD ["/etc/init.d/asterisk start"]
+CMD ["/etc/init.d/asterisk", "start"]
