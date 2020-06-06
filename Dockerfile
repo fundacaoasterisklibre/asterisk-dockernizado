@@ -1,7 +1,7 @@
 FROM centos:centos7
 LABEL maintainer="Fagner Silva<fagnerluis@gmail.com>"
 
-ENV ASTERISK_VERSION=17.4
+ENV ASTERISK_VERSION=16.10
 
 RUN yum clean metadata && \
     yum -y update && \
@@ -15,6 +15,8 @@ RUN yum install pjproject-devel pjproject gcc gcc-c++ ncurses-devel cpp ncurses\
         make libxml2 libxml2-devel binutils-devel wget openssl-devel newt-devel \
         kernel-headerskernel-devel sqlite sqlite-devel libuuid-devel gtk2-devel \
         jansson-devel dmidecode newt-devel net-snmp-devel xinetd tar -y && \
+        yum clean all && \
+        yum autoremove -y && \
     ./contrib/scripts/install_prereq install && \
     ./contrib/scripts/install_prereq install-unpackaged && \
     ./configure --libdir=/usr/lib64 --with-pjproject-bundled \
@@ -110,11 +112,12 @@ RUN yum install pjproject-devel pjproject gcc gcc-c++ ncurses-devel cpp ncurses\
     menuselect.makeopts && \
     make && \
     make install && \
-    make samples && \
+    #make samples && \ 
     make config && \
     ldconfig
 
-WORKDIR /
+WORKDIR /etc/asterisk/
+COPY ./conf/ . 
 
 RUN sed -i -e 's/# MAXFILES=/MAXFILES=/' /usr/sbin/safe_asterisk && \
     sed -i 's/TTY=9/TTY=/g' /usr/sbin/safe_asterisk && \
@@ -125,4 +128,5 @@ RUN sed -i -e 's/# MAXFILES=/MAXFILES=/' /usr/sbin/safe_asterisk && \
     chown -R asterisk:asterisk /usr/lib64/asterisk/ && \
     localedef -i en_US -f UTF-8 en_US.UTF-8
 
-ENTRYPOINT ["/etc/init.d/asterisk start"]
+ENTRYPOINT ["/usr/sbin/asterisk"]
+CMD ["-c", "-vvvv", "-g"]
